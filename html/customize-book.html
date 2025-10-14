@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipbook System - Customize Book</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #ff69b4; color: white; }
+        nav { background: #ff1493; padding: 10px; }
+        nav ul { list-style: none; padding: 0; }
+        nav ul li { display: inline; margin-right: 15px; }
+        nav ul li a { color: white; text-decoration: none; }
+        #content { padding: 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/homepage">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/faqs">FAQs</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/customize-book">Customize</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <h1>Welcome to Flipbook System</h1>
+        <p>This is the homepage. More content to come!</p>
+    </div>
+    <script src="auth.js"></script>
+<script src="cart.js"></script>
+<script>
+    // Update header based on user status
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginBtn = document.querySelector('a[href="signup.html"]');
+        
+        if (loginBtn && auth.isLoggedIn()) {
+            const user = auth.getCurrentUser();
+            
+            // Replace login button with user info
+            loginBtn.innerHTML = `<i class="bi bi-person-check-fill me-1"></i> ${user.username}`;
+            loginBtn.onclick = () => { 
+                if (confirm('Do you want to logout?')) {
+                    auth.logout(); 
+                }
+                return false; 
+            };
+            
+            // Add Admin Dashboard button if user is admin
+            if (auth.isAdmin()) {
+                const headerButtons = document.querySelector('.header-buttons');
+                if (headerButtons) {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin-dashboard.html';
+                    adminBtn.className = 'btn btn-warning btn-sm';
+                    adminBtn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Dashboard';
+                    adminBtn.style.fontWeight = '700';
+                    headerButtons.appendChild(adminBtn);
+                }
+            }
+        }
+        
+        // Update cart count
+        const cartBtn = document.querySelector('a[href="cart.html"]');
+        if (cartBtn && auth.isLoggedIn()) {
+            cart.loadCart().then(() => {
+                const count = cart.getItemCount();
+                if (count > 0) {
+                    cartBtn.innerHTML += ` <span class="badge bg-danger">${count}</span>`;
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

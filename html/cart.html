@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Sweet Imagica</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .user-welcome {
+            color: #9b587c;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .cart-section {
+            min-height: 70vh;
+            padding: 3rem 0;
+        }
+
+        .cart-title {
+            font-family: 'Fredoka', sans-serif;
+            color: #9b587c;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cart-items-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(155, 88, 124, 0.1);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-cart i {
+            font-size: 5rem;
+            color: #9b587c;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item-card {
+            background: white;
+            border: 2px solid rgba(155, 88, 124, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item-card:hover {
+            border-color: #9b587c;
+            box-shadow: 0 5px 20px rgba(155, 88, 124, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-item-title {
+            color: #9b587c;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-item-detail {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .cart-item-detail strong {
+            color: #333;
+        }
+
+        .cart-item-price {
+            color: #9b587c;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .order-summary-card {
+            background: linear-gradient(135deg, #9b587c 0%, #d946a6 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            position: sticky;
+            top: 150px;
+            box-shadow: 0 10px 30px rgba(155, 88, 124, 0.3);
+        }
+
+        .order-summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .summary-divider {
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            margin: 1rem 0;
+        }
+
+        .total-row {
+            font-size: 1.3rem;
+            font-weight: 800;
+            padding-top: 1rem;
+        }
+
+        .btn-checkout {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            color: #000;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .payment-methods {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .payment-methods i {
+            font-size: 2rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .payment-methods i:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .text-purple {
+            color: #9b587c;
+        }
+
+        .btn-remove {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Payment Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #9b587c 0%, #d946a6 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+        }
+
+        .nav-tabs .nav-link {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #9b587c;
+            font-weight: 700;
+        }
+
+        #card-element {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .payment-option {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .payment-option i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-loader {
+            animation: skeleton-loading 1s linear infinite alternate;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-color: hsl(200, 20%, 80%);
+            }
+            100% {
+                background-color: hsl(200, 20%, 95%);
+            }
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            color: #9b587c;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            color: #d946a6;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 992px) {
+            .order-summary-card {
+                position: relative;
+                top: 0;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cart-title {
+                font-size: 1.8rem;
+            }
+
+            .cart-item-card {
+                padding: 1rem;
+            }
+
+            .cart-item-price {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header bg-white shadow-sm py-2 sticky-top">
+        <div class="container-fluid px-4">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="social-icons d-flex gap-2">
+                        <a href="#" class="social-icon youtube"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="social-icon facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon instagram"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col-auto">
+                    <div class="header-buttons d-flex align-items-center gap-3">
+                        <span class="user-welcome" id="userWelcome"></span>
+                        <button class="btn btn-sm btn-purple" onclick="auth.logout()">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar bg-purple text-white text-center py-2">
+        <p class="mb-0">🔒 Secure Checkout - Your order will be processed immediately</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.webp" alt="Sweet Imagica" class="logo">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Cart Content -->
+    <section class="cart-section">
+        <div class="container">
+            <a href="shop.html" class="continue-shopping">
+                <i class="bi bi-arrow-left"></i> Continue Shopping
+            </a>
+
+            <h2 class="cart-title">🛒 Your Shopping Cart</h2>
+
+            <div class="row g-4">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    <div class="cart-items-container" id="cartItemsContainer">
+                        <!-- Loading skeleton -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-purple" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading your cart...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="order-summary-card">
+                        <h4 class="order-summary-title">💰 Order Summary</h4>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (10%):</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="shipping">FREE</span>
+                        </div>
+                        
+                        <div class="summary-divider"></div>
+                        
+                        <div class="summary-row total-row">
+                            <span><strong>Total:</strong></span>
+                            <span id="total"><strong>$0.00</strong></span>
+                        </div>
+
+                        <button class="btn btn-checkout" onclick="proceedToCheckout()" id="checkoutBtn" disabled>
+                            💳 Proceed to Checkout
+                        </button>
+
+                        <div class="payment-methods">
+                            <p class="mb-3"><small>We accept:</small></p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <i class="bi bi-credit-card-2-front"></i>
+                                <i class="bi bi-paypal"></i>
+                                <i class="bi bi-google"></i>
+                                <i class="bi bi-apple"></i>
+                            </div>
+                            <p class="mt-3 mb-0"><small>🔒 100% Secure Payment</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">
+                        <i class="bi bi-credit-card-2-front"></i> Complete Your Payment
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="payment-tabs">
+                        <ul class="nav nav-tabs mb-4" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="card-tab" data-bs-toggle="tab" data-bs-target="#cardPayment" type="button" role="tab">
+                                    <i class="bi bi-credit-card"></i> Credit/Debit Card
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="paypal-tab" data-bs-toggle="tab" data-bs-target="#paypalPayment" type="button" role="tab">
+                                    <i class="bi bi-paypal"></i> PayPal
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- Card Payment -->
+                            <div class="tab-pane fade show active" id="cardPayment" role="tabpanel">
+                                <form id="paymentForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Card Information</label>
+                                        <div id="card-element"></div>
+                                    </div>
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Name on Card</label>
+                                            <input type="text" class="form-control" id="cardName" placeholder="John Doe" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Billing ZIP Code</label>
+                                            <input type="text" class="form-control" id="billingZip" placeholder="12345" required>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i> Your payment information is secure and encrypted.
+                                    </div>
+                                    <button type="submit" class="btn btn-checkout" id="payBtn">
+                                        <i class="bi bi-lock-fill"></i> Pay <span id="paymentTotal">$0.00</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- PayPal Payment -->
+                            <div class="tab-pane fade" id="paypalPayment" role="tabpanel">
+                                <div class="payment-option">
+                                    <i class="bi bi-paypal" style="color: #003087;"></i>
+                                    <h5 class="mt-3 mb-3">Pay with PayPal</h5>
+                                    <p class="text-muted mb-4">You will be redirected to PayPal to complete your purchase securely.</p>
+                                    <button class="btn btn-primary btn-lg" onclick="processPayPalPayment()" style="background: #0070ba; border: none;">
+                                        <i class="bi bi-paypal"></i> Continue with PayPal
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h3 class="footer-heading">CUSTOMER CARE</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Search</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR POLICIES</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR MISSION</h3>
+                    <p class="footer-mission">
+                        Making storytelling special with personalized digital flipbooks for every child.
+                    </p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="footer-social text-center">
+                        <a href="#" class="footer-social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    
+    <script>
+        // Check if user is logged in
+        if (!auth.requireLogin()) {
+            // Will redirect to signup if not logged in
+        }
+
+        // Display user welcome message
+        const user = auth.getCurrentUser();
+        if (user) {
+            document.getElementById('userWelcome').textContent = `Welcome, ${user.username}!`;
+        }
+
+        // Global variables
+        let currentCartItems = [];
+
+        // Load and display cart items
+        async function loadCartItems() {
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            
+            try {
+                await cart.loadCart();
+                const items = cart.getItems();
+                currentCartItems = items;
+                
+                if (items.length === 0) {
+                    cartItemsContainer.innerHTML = `
+                        <div class="empty-cart">
+                            <i class="bi bi-cart-x"></i>
+                            <h4>Your cart is empty</h4>
+                            <p class="text-muted mb-4">Add some magical storybooks to get started!</p>
+                            <a href="shop.html" class="btn btn-purple btn-lg">
+                                <i class="bi bi-shop"></i> Start Shopping
+                            </a>
+                        </div>
+                    `;
+                    document.getElementById('checkoutBtn').disabled = true;
+                    return;
+                }
+                
+                cartItemsContainer.innerHTML = items.map(item => {
+                    const book = item.bookID;
+                    const customData = book?.customData || {};
+                    const price = book?.price || 0;
+                    
+                    return `
+                        <div class="cart-item-card">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h5 class="cart-item-title">
+                                        <i class="bi bi-book-fill"></i> ${book?.title || 'Custom Visual Storybook'}
+                                    </h5>
+                                    <div class="cart-item-detail">
+                                        <strong>Child Name:</strong> ${customData.childName || 'N/A'}
+                                    </div>
+                                    <div class="cart-item-detail">
+                                        <strong>Age:</strong> ${customData.childAge || 'N/A'}
+                                    </div>
+                                    <div class="cart-item-detail">
+                                        <strong>Theme:</strong> ${customData.theme || 'N/A'}
+                                    </div>
+                                    <div class="cart-item-detail">
+                                        <strong>Language:</strong> ${customData.storyLanguage || 'N/A'}
+                                    </div>
+                                    <div class="cart-item-detail">
+                                        <strong>Style:</strong> ${customData.storyStyle || 'N/A'}
+                                    </div>
+                                    ${customData.specialInstructions ? `
+                                        <div class="cart-item-detail">
+                                            <strong>Instructions:</strong> <small>${customData.specialInstructions}</small>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="cart-item-price mb-3">$${price.toFixed(2)}</div>
+                                    <button class="btn btn-remove btn-sm" onclick="removeFromCart('${item._id}')">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('checkoutBtn').disabled = false;
+                updateOrderSummary();
+                
+            } catch (error) {
+                console.error('Load cart error:', error);
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="bi bi-exclamation-triangle text-danger"></i>
+                        <h4>Error Loading Cart</h4>
+                        <p class="text-muted">Please refresh the page or try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Remove item from cart
+        async function removeFromCart(itemId) {
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                const success = await cart.removeItem(itemId);
+                if (success) {
+                    await loadCartItems();
+                } else {
+                    alert('Failed to remove item. Please try again.');
+                }
+            }
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            const subtotal = cart.getTotal();
+            const tax = subtotal * 0.10; // 10% tax
+            const shipping = 0; // Free shipping
+            const total = subtotal + tax + shipping;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('paymentTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (cart.getItemCount() === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            modal.show();
+            
+            // Initialize Stripe
+            setTimeout(initializeStripe, 500);
+        }
+
+        // Initialize Stripe
+        let stripe;
+        let elements;
+        let cardElement;
+
+        function initializeStripe() {
+            // Demo Stripe key - Replace with your actual publishable key
+            // stripe = Stripe('pk_test_YOUR_STRIPE_KEY');
+            
+            // For demo purposes, we'll skip actual Stripe initialization
+            console.log('Stripe initialization (Demo Mode)');
+        }
+
+        // Handle card payment
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const payBtn = document.getElementById('payBtn');
+            const originalText = payBtn.innerHTML;
+            
+            payBtn.disabled = true;
+            payBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            // Simulate payment processing
+            setTimeout(async () => {
+                // Clear cart
+                await cart.clearCart();
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                modal.hide();
+                
+                // Show success message
+                alert('✅ Payment successful! Your order has been placed.\n\nOrder ID: ORDER-' + Date.now() + '\n\nYou will receive a confirmation email shortly.');
+                
+                // Redirect to homepage
+                window.location.href = 'homepage.html';
+            }, 2000);
+        });
+
+        // Process PayPal payment
+        function processPayPalPayment() {
+            alert('🎉 Redirecting to PayPal...\n\n(Demo Mode - Payment Processing)');
+            
+            setTimeout(async () => {
+                await cart.clearCart();
+                alert('✅ PayPal payment successful! Your order has been placed.');
+                window.location.href = 'homepage.html';
+            }, 1500);
+        }
+
+        // Load cart on page load
+        loadCartItems();
+    </script>
+    <script src="auth.js"></script>
+<script src="cart.js"></script>
+<script>
+    // Update header based on user status
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginBtn = document.querySelector('a[href="signup.html"]');
+        
+        if (loginBtn && auth.isLoggedIn()) {
+            const user = auth.getCurrentUser();
+            
+            // Replace login button with user info
+            loginBtn.innerHTML = `<i class="bi bi-person-check-fill me-1"></i> ${user.username}`;
+            loginBtn.onclick = () => { 
+                if (confirm('Do you want to logout?')) {
+                    auth.logout(); 
+                }
+                return false; 
+            };
+            
+            // Add Admin Dashboard button if user is admin
+            if (auth.isAdmin()) {
+                const headerButtons = document.querySelector('.header-buttons');
+                if (headerButtons) {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin-dashboard.html';
+                    adminBtn.className = 'btn btn-warning btn-sm';
+                    adminBtn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Dashboard';
+                    adminBtn.style.fontWeight = '700';
+                    headerButtons.appendChild(adminBtn);
+                }
+            }
+        }
+        
+        // Update cart count
+        const cartBtn = document.querySelector('a[href="cart.html"]');
+        if (cartBtn && auth.isLoggedIn()) {
+            cart.loadCart().then(() => {
+                const count = cart.getItemCount();
+                if (count > 0) {
+                    cartBtn.innerHTML += ` <span class="badge bg-danger">${count}</span>`;
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

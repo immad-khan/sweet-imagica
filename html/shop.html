@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Sweet Imagica</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        background-color: white !important;
+        background-image: none !important;
+    }
+</style>
+<body>
+    <!-- Header - Sticky -->
+    <header class="header bg-white shadow-sm py-2 sticky-top">
+        <div class="container-fluid px-4">
+            <div class="row align-items-center">
+                <!-- Social Icons - Far Left -->
+                <div class="col-auto">
+                    <div class="social-icons d-flex gap-2">
+                        <a href="#" class="social-icon youtube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="#" class="social-icon instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Spacer -->
+                <div class="col"></div>
+                
+                <!-- Right Header Buttons -->
+                <div class="col-auto">
+                    <div class="header-buttons d-flex align-items-center gap-3">
+                        <select class="form-select form-select-sm currency-select">
+                            <option>CAD</option>
+                            <option>USD</option>
+                            <option>EUR</option>
+                        </select>
+                        <a href="signup.html" class="btn btn-purple btn-sm">
+                            <i class="bi bi-person-circle me-1"></i> Login
+                        </a>
+                        <a href="#" class="btn btn-purple btn-sm">
+                            <i class="bi bi-download me-1"></i> Downloads
+                        </a>
+                        <a href="cart.html" class="btn btn-purple-dark btn-sm">
+                            <i class="bi bi-cart3 me-1"></i> Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Announcement Bar - Sticky -->
+    <div class="announcement-bar bg-purple text-white text-center py-2 sticky-top">
+        <p class="mb-0" id="announcement">🎯 Pre Crafted Story Bundles with Educational Objectives & Learning outcomes – All Products Delivered Instantly via Email!</p>
+    </div>
+
+    <!-- Navigation - Sticky -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.webp" alt="Sweet Imagica" class="logo">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto nav-spaced">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="homepage.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="shop.html">SHOP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="about-us.html">ABOUT US</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="contact.html">CONTACT US</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="faqs.html">FAQS</a>
+                    </li>
+                </ul>
+                
+                <!-- Search Form -->
+                <form class="search-form-modern">
+                    <div class="search-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="search" placeholder="Search flipbooks..." class="search-input-modern">
+                        <button type="submit" class="search-btn-modern">SEARCH</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Content -->
+    <section class="py-4">
+        <div class="container">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <div class="d-flex justify-content-center gap-3 mb-3">
+                    <i class="bi bi-book-fill fs-1 text-purple"></i>
+                    <i class="bi bi-book-fill fs-1 text-purple"></i>
+                    <i class="bi bi-book-fill fs-1 text-purple"></i>
+                </div>
+                <h1 class="fw-bold text-purple mb-2" style="font-family: 'Fredoka', sans-serif; font-size: 2.5rem; letter-spacing: 2px;">STORY BOOKS HUB</h1>
+                <p class="text-purple fs-6 fw-semibold">Choose your adventure - Create custom stories or explore our collection!</p>
+            </div>
+
+            <!-- Product Card -->
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-xl-6">
+                    <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #9b587c 0%, #d946a6 100%); border-radius: 30px;">
+                        <div class="card-body p-4 p-md-5 text-white">
+                            <!-- Emoji Icon -->
+                            <div class="text-center mb-3">
+                                <span style="font-size: 4rem;">🎨</span>
+                            </div>
+
+                            <!-- Title -->
+                            <h2 class="text-center fw-bold mb-3" style="font-family: 'Fredoka', sans-serif; font-size: 1.75rem; letter-spacing: 1px;">CREATE YOUR OWN VISUAL STORYBOOK</h2>
+
+                            <!-- Description -->
+                            <p class="text-center mb-4" style="font-size: 1rem; line-height: 1.6;">
+                                Design personalized story books with <strong>custom characters, themes, and stunning visual elements</strong>. Interactive audio-visual stories that read aloud!
+                            </p>
+
+                            <!-- Features -->
+                            <ul class="list-unstyled mb-4">
+                                <li class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-star-fill text-warning me-3"></i>
+                                    <span>Interactive Audio-Visual Stories</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-star-fill text-warning me-3"></i>
+                                    <span>Story That Reads Aloud</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-star-fill text-warning me-3"></i>
+                                    <span>Custom Characters & Settings</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-star-fill text-warning me-3"></i>
+                                    <span>Professional Illustrations</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-star-fill text-warning me-3"></i>
+                                    <span>Instant Digital Access</span>
+                                </li>
+                            </ul>
+
+                            <!-- Button -->
+                            <div class="text-center">
+                                <a href="form.html" class="btn btn-lg btn-outline-light fw-bold px-5 py-3" style="border-width: 3px; border-radius: 50px; letter-spacing: 1px; transition: all 0.3s;">START CREATING</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container py-5">
+            <div class="row g-4">
+                <!-- Customer Care -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">CUSTOMER CARE</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Search</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Our Policies -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR POLICIES</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Our Mission -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR MISSION</h3>
+                    <p class="footer-mission">
+                        Our goal is to make storytelling, gifting, and celebrating more special by adding a personal touch to everything we create. We want every child to feel like the hero of their own story — and every pet to shine in digital art.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="footer-social text-center">
+                        <a href="#" class="footer-social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Rotating Announcements
+        const announcements = [
+            "🎯 Pre Crafted Story Bundles with Educational Objectives & Learning outcomes – All Products Delivered Instantly via Email!",
+            "✨ Order Unique Digital Flip Books for You & Your Loved Ones!"
+        ];
+        
+        let currentIndex = 0;
+        const announcementElement = document.getElementById('announcement');
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % announcements.length;
+            announcementElement.textContent = announcements[currentIndex];
+        }, 5000);
+        
+        // Button hover effect
+        document.querySelector('.btn-outline-light').addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'white';
+            this.style.color = '#9b587c';
+            this.style.transform = 'scale(1.05)';
+        });
+        
+        document.querySelector('.btn-outline-light').addEventListener('mouseleave', function() {
+            this.style.backgroundColor = 'transparent';
+            this.style.color = 'white';
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+    <script src="auth.js"></script>
+<script src="cart.js"></script>
+<script>
+    // Update header based on user status
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginBtn = document.querySelector('a[href="signup.html"]');
+        
+        if (loginBtn && auth.isLoggedIn()) {
+            const user = auth.getCurrentUser();
+            
+            // Replace login button with user info
+            loginBtn.innerHTML = `<i class="bi bi-person-check-fill me-1"></i> ${user.username}`;
+            loginBtn.onclick = () => { 
+                if (confirm('Do you want to logout?')) {
+                    auth.logout(); 
+                }
+                return false; 
+            };
+            
+            // Add Admin Dashboard button if user is admin
+            if (auth.isAdmin()) {
+                const headerButtons = document.querySelector('.header-buttons');
+                if (headerButtons) {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin-dashboard.html';
+                    adminBtn.className = 'btn btn-warning btn-sm';
+                    adminBtn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Dashboard';
+                    adminBtn.style.fontWeight = '700';
+                    headerButtons.appendChild(adminBtn);
+                }
+            }
+        }
+        
+        // Update cart count
+        const cartBtn = document.querySelector('a[href="cart.html"]');
+        if (cartBtn && auth.isLoggedIn()) {
+            cart.loadCart().then(() => {
+                const count = cart.getItemCount();
+                if (count > 0) {
+                    cartBtn.innerHTML += ` <span class="badge bg-danger">${count}</span>`;
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

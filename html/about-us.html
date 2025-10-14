@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Sweet Imagica</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header - Sticky -->
+    <header class="header bg-white shadow-sm py-2 sticky-top">
+        <div class="container-fluid px-4">
+            <div class="row align-items-center">
+                <!-- Social Icons - Far Left -->
+                <div class="col-auto">
+                    <div class="social-icons d-flex gap-2">
+                        <a href="#" class="social-icon youtube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="#" class="social-icon instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Spacer -->
+                <div class="col"></div>
+                
+                <!-- Right Header Buttons -->
+                <div class="col-auto">
+                    <div class="header-buttons d-flex align-items-center gap-3">
+                        <a href="signup.html" class="btn btn-purple btn-sm">
+                            <i class="bi bi-person-circle me-1"></i> Login
+                        </a>
+                        <a href="#" class="btn btn-purple btn-sm">
+                            <i class="bi bi-download me-1"></i> Downloads
+                        </a>
+                        <a href="cart.html" class="btn btn-purple-dark btn-sm">
+                            <i class="bi bi-cart3 me-1"></i> Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Announcement Bar - Sticky -->
+    <div class="announcement-bar bg-purple text-white text-center py-2 sticky-top">
+        <p class="mb-0" id="announcement">🎯 Pre Crafted Story Bundles with Educational Objectives & Learning outcomes – All Products Delivered Instantly via Email!</p>
+    </div>
+
+    <!-- Navigation - Sticky -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.webp" alt="Sweet Imagica" class="logo">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto nav-spaced">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="homepage.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="shop.html">SHOP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="about-us.html">ABOUT US</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="contact.html">CONTACT US</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="faqs.html">FAQS</a>
+                    </li>
+                </ul>
+                
+                <!-- Search Form -->
+                <form class="search-form-modern">
+                    <div class="search-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="search" placeholder="Search flipbooks..." class="search-input-modern">
+                        <button type="submit" class="search-btn-modern">SEARCH</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="about-hero-overlay">
+            <div class="container">
+                <h1 class="about-hero-title">About Us</h1>
+                <p class="about-hero-subtitle">Creating magical stories</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main About Section with Image -->
+    <section class="about-main-section py-5">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <!-- Image Column -->
+                <div class="col-lg-5">
+                    <div class="about-image-grid">
+                        <img src="main.webp" alt="Custom Flipbooks" class="about-main-img">
+                    </div>
+                    <div class="about-badge">
+                        <i class="bi bi-award-fill"></i>
+                        <span>Trusted by Families</span>
+                    </div>
+                </div>
+
+                <!-- Content Column -->
+                <div class="col-lg-7">
+                    <div class="about-content">
+                        <span class="about-label">ABOUT US</span>
+                        <h2 class="about-title">More than Just Digital Flipbooks</h2>
+                        <p class="about-text">
+                            At Sweet Imagica, we're committed to transforming the traditional storytelling landscape. With a blend of creativity, technology, and personal touch, we create custom digital flipbooks that bring your child's imagination to life. Every story is unique, every character is special, and every moment is worth celebrating.
+                        </p>
+                        <p class="about-text">
+                            We believe that every child deserves to see themselves as the hero of their own adventure. By combining your photos, details, and our creative expertise, we craft personalized digital experiences that will be cherished for years to come.
+                        </p>
+                        <button class="btn about-learn-btn">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="about-features-section py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="feature-badge">
+                        <i class="bi bi-people-fill"></i>
+                        <h4>100%</h4>
+                        <p>Personalized</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-badge">
+                        <i class="bi bi-lightning-fill"></i>
+                        <h4>Fast</h4>
+                        <p>Delivery</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-badge">
+                        <i class="bi bi-shield-check"></i>
+                        <h4>Quality</h4>
+                        <p>Guaranteed</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-badge">
+                        <i class="bi bi-heart-fill"></i>
+                        <h4>Made with</h4>
+                        <p>Love</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="about-values-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <h3 class="values-heading">WE ARE THE BEST</h3>
+                    <h2 class="values-title">Trust the Professionals for Custom Flipbooks</h2>
+                    <p class="values-text">
+                        Sweet Imagica is committed to bringing personalized storytelling to life. We blend creativity with technology to create memorable digital experiences for your loved ones.
+                    </p>
+                    <div class="d-flex gap-3 mt-4">
+                        <button class="btn about-learn-btn">Learn More</button>
+                        <button class="btn about-contact-btn">Contact Us</button>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-4 mt-lg-0 mt-4">
+                        <!-- Our Vision -->
+                        <div class="col-12">
+                            <div class="value-card">
+                                <div class="value-icon">
+                                    <i class="bi bi-eye-fill"></i>
+                                </div>
+                                <div class="value-content">
+                                    <h4 class="value-title">Our Vision</h4>
+                                    <p class="value-text">
+                                        To make every child feel like the star of their own story through personalized digital flipbooks that capture precious moments and inspire imagination.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Our Mission -->
+                        <div class="col-12">
+                            <div class="value-card">
+                                <div class="value-icon">
+                                    <i class="bi bi-bullseye"></i>
+                                </div>
+                                <div class="value-content">
+                                    <h4 class="value-title">Our Mission</h4>
+                                    <p class="value-text">
+                                        To deliver high-quality, custom digital flipbooks that celebrate each child's uniqueness, combining your photos and stories with our creative expertise for unforgettable keepsakes.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Award Winning -->
+                        <div class="col-12">
+                            <div class="value-card">
+                                <div class="value-icon">
+                                    <i class="bi bi-trophy-fill"></i>
+                                </div>
+                                <div class="value-content">
+                                    <h4 class="value-title">Award Winning Service</h4>
+                                    <p class="value-text">
+                                        Recognized for excellence in personalized digital storytelling, we take pride in creating magical experiences that families treasure forever.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="about-newsletter-section py-5">
+        <div class="container">
+            <div class="newsletter-box text-center">
+                <h2 class="newsletter-title">Get the latest update!</h2>
+                <p class="newsletter-subtitle">Stay informed about new collections and exclusive offers</p>
+                <form class="newsletter-form">
+                    <div class="newsletter-input-wrapper">
+                        <input type="email" placeholder="Your Email Address" class="newsletter-input" required>
+                        <button type="submit" class="newsletter-btn">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container py-5">
+            <div class="row g-4">
+                <!-- Customer Care -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">CUSTOMER CARE</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Search</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Our Policies -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR POLICIES</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Our Mission -->
+                <div class="col-md-4">
+                    <h3 class="footer-heading">OUR MISSION</h3>
+                    <p class="footer-mission">
+                        Our goal is to make storytelling, gifting, and celebrating more special by adding a personal touch to everything we create. We want every child to feel like the hero of their own story — and every pet to shine in digital art.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="footer-social text-center">
+                        <a href="#" class="footer-social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="footer-social-icon"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auth and Cart Scripts -->
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Rotating Announcements
+        const announcements = [
+            "🎯 Pre Crafted Story Bundles with Educational Objectives & Learning outcomes – All Products Delivered Instantly via Email!",
+            "✨ Order Unique Digital Flip Books for You & Your Loved Ones!"
+        ];
+        
+        let currentIndex = 0;
+        const announcementElement = document.getElementById('announcement');
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % announcements.length;
+            announcementElement.textContent = announcements[currentIndex];
+        }, 5000);
+        
+        // Update header based on user status
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.querySelector('a[href="signup.html"]');
+            
+            if (loginBtn && auth.isLoggedIn()) {
+                const user = auth.getCurrentUser();
+                
+                // Replace login button with user info
+                loginBtn.innerHTML = `<i class="bi bi-person-check-fill me-1"></i> ${user.username}`;
+                loginBtn.onclick = () => { 
+                    if (confirm('Do you want to logout?')) {
+                        auth.logout(); 
+                    }
+                    return false; 
+                };
+                
+                // Add Admin Dashboard button if user is admin
+                if (auth.isAdmin()) {
+                    const headerButtons = document.querySelector('.header-buttons');
+                    if (headerButtons) {
+                        const adminBtn = document.createElement('a');
+                        adminBtn.href = 'admin-dashboard.html';
+                        adminBtn.className = 'btn btn-warning btn-sm';
+                        adminBtn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Dashboard';
+                        adminBtn.style.fontWeight = '700';
+                        headerButtons.appendChild(adminBtn);
+                    }
+                }
+            }
+            
+            // Update cart count
+            const cartBtn = document.querySelector('a[href="cart.html"]');
+            if (cartBtn && auth.isLoggedIn()) {
+                cart.loadCart().then(() => {
+                    const count = cart.getItemCount();
+                    if (count > 0) {
+                        cartBtn.innerHTML += ` <span class="badge bg-danger">${count}</span>`;
+                    }
+                });
+            }
+        });
+    </script> 
+</body>
+</html>
