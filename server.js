@@ -23,20 +23,27 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'html')));
 
+// DEFINE THESE AT THE TOP - GLOBALLY
+const JWT_SECRET = process.env.JWT_SECRET || 'sweet-imagica-secret-key-2024';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'adminisusername';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'adminpassword786';
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/my-flipbook';
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'dcdhsyj86';
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '921185953673167';
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || 'P-Vro4fA8_gF9dnTcHgKnOQ-xGI';
+
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/my-flipbook')
+mongoose.connect(MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Cloudinary Config
 cloudinary.config({ 
-  cloud_name: 'dcdhsyj86', 
-  api_key: '921185953673167', 
-  api_secret: 'P-Vro4fA8_gF9dnTcHgKnOQ-xGI' 
+  cloud_name: CLOUDINARY_CLOUD_NAME, 
+  api_key: CLOUDINARY_API_KEY, 
+  api_secret: CLOUDINARY_API_SECRET 
 });
-
-// JWT Secret
-const JWT_SECRET = 'sweet-imagica-secret-key-2024';
 
 // ============ AUTHENTICATION ROUTES ============
 
@@ -91,9 +98,6 @@ app.post('/api/auth/login', async (req, res) => {
     
     console.log('Login attempt:', { username }); // Debug log
     
-    // Special admin credentials
-    const ADMIN_USERNAME = 'adminisusername';
-    const ADMIN_PASSWORD = 'adminpassword786';
     
     // Check if admin credentials (exact match)
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
@@ -412,8 +416,7 @@ app.get('/:page', (req, res) => {
   });
 });
 
-// Start Server
-const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log('📊 MongoDB Database: my-flipbook');
