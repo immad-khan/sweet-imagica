@@ -469,10 +469,17 @@
             const result = await auth.login(username, password);
             
             if (result.success) {
-                showAlert('✅ Login successful! Redirecting...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'homepage.html';
-                }, 1500);
+                if (result.user.isAdmin) {
+                    showAlert('✅ Admin login successful! Redirecting to admin dashboard...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1500);
+                } else {
+                    showAlert('✅ Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'homepage.html';
+                    }, 1500);
+                }
             } else {
                 showAlert('❌ ' + result.message, 'danger');
                 loginBtn.disabled = false;
@@ -525,36 +532,7 @@
                 window.location.href = 'homepage.html';
             }, 2000);
         }
-        async function handleLogin(e) {
-    e.preventDefault();
-    
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Logging in...';
-    
-    const result = await auth.login(username, password);
-    
-    if (result.success) {
-        if (result.user.isAdmin) {
-            showAlert('✅ Admin login successful! Redirecting to admin dashboard...', 'success');
-            setTimeout(() => {
-                window.location.href = 'admin-dashboard.html';
-            }, 1500);
-        } else {
-            showAlert('✅ Login successful! Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'homepage.html';
-            }, 1500);
-        }
-    } else {
-        showAlert('❌ ' + result.message, 'danger');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Login';
-    }
-}
+
     </script>
 </body>
 </html>
