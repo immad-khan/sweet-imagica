@@ -88,6 +88,56 @@
             font-size: 0.9rem;
             border-radius: 8px;
         }
+
+        /* Order Details Modal */
+        .detail-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-section h6 {
+            color: #9b587c;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .detail-row .label {
+            color: #666;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .detail-row .value {
+            font-weight: 600;
+            color: #333;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .detail-row .value.yes { color: #0f5132; }
+        .detail-row .value.no  { color: #aaa; }
+
+        #viewOrderModal .modal-header {
+            background: linear-gradient(135deg, #9b587c 0%, #d946a6 100%);
+            color: white;
+        }
+
+        #viewOrderModal .modal-header .btn-close {
+            filter: invert(1);
+        }
     </style>
 </head>
 <body>
@@ -162,7 +212,25 @@
         </div>
     </div>
 
-    <!-- Update Order Modal -->
+    <!-- ===== View Order Details Modal ===== -->
+    <div class="modal fade" id="viewOrderModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="viewOrderBody">
+                    <!-- Populated by viewOrder() -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Update Order Modal ===== -->
     <div class="modal fade" id="updateOrderModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -198,7 +266,10 @@
     <script>
         const apiUrl = 'http://localhost:3000/api';
 
-        // Load all orders
+        // Global cache — buttons reference orders by index, never by inline JSON
+        let ordersCache = [];
+
+        // ── Load all orders ──────────────────────────────────────────────────
         async function loadOrders() {
             const tbody = document.getElementById('ordersTableBody');
             try {
@@ -207,6 +278,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
+                    ordersCache = data.orders;
                     displayOrders(data.orders);
                     updateStats(data.orders);
                 } else {
@@ -214,10 +286,11 @@
                 }
             } catch (error) {
                 console.error('Load orders error:', error);
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">❌ Failed to connect to server. Make sure the server is running on port 3000.<br><small>${error.message}</small></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">❌ Failed to connect to server.<br><small>${error.message}</small></td></tr>`;
             }
         }
 
+        // ── Render table rows ────────────────────────────────────────────────
         function displayOrders(orders) {
             const tbody = document.getElementById('ordersTableBody');
             
@@ -226,7 +299,7 @@
                 return;
             }
             
-            tbody.innerHTML = orders.map(order => {
+            tbody.innerHTML = orders.map((order, index) => {
                 const customData = order.customData || {};
                 const statusClass = `status-${order.status}`;
                 
@@ -240,10 +313,10 @@
                         <td><span class="status-badge ${statusClass}">${order.status}</span></td>
                         <td>${new Date(order.createdAt).toLocaleDateString()}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary btn-action" onclick='viewOrder(${JSON.stringify(order)})'>
+                            <button class="btn btn-sm btn-primary btn-action me-1" onclick="viewOrder(${index})" title="View Details">
                                 <i class="bi bi-eye"></i>
                             </button>
-                            <button class="btn btn-sm btn-success btn-action" onclick='updateOrder("${order._id}", "${order.status}", "${order.downloadPath || ''}")'>
+                            <button class="btn btn-sm btn-success btn-action" onclick="updateOrder('${order._id}', '${order.status}', '${order.downloadPath || ''}')" title="Update Status">
                                 <i class="bi bi-pencil"></i>
                             </button>
                         </td>
@@ -252,6 +325,7 @@
             }).join('');
         }
 
+        // ── Stats ────────────────────────────────────────────────────────────
         function updateStats(orders) {
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
@@ -259,18 +333,103 @@
             document.getElementById('completedOrders').textContent = orders.filter(o => o.status === 'completed').length;
         }
 
-        function viewOrder(order) {
-            const customData = order.customData || {};
-            alert(`Order Details:\n\nChild: ${customData.childName}\nAge: ${customData.childAge}\nTheme: ${customData.theme}\nLanguage: ${customData.storyLanguage}\nPrice: $${order.price}`);
+        // ── View full order details ──────────────────────────────────────────
+        function viewOrder(index) {
+            const order = ordersCache[index];
+            if (!order) return;
+
+            const c = order.customData || {};
+            const yn = v => v === 'yes'
+                ? '<span class="value yes">✅ Yes</span>'
+                : '<span class="value no">❌ No</span>';
+            const val = v => `<span class="value">${v || '—'}</span>`;
+
+            document.getElementById('viewOrderBody').innerHTML = `
+                <!-- Order Meta -->
+                <div class="detail-section">
+                    <h6>📦 Order Info</h6>
+                    <div class="detail-row"><span class="label">Order ID</span>${val(order._id)}</div>
+                    <div class="detail-row"><span class="label">Date</span>${val(new Date(order.createdAt).toLocaleString())}</div>
+                    <div class="detail-row"><span class="label">Status</span><span class="value"><span class="status-badge status-${order.status}">${order.status}</span></span></div>
+                    <div class="detail-row"><span class="label">Total Price</span><span class="value" style="color:#9b587c;font-size:1.1em;">$${order.price?.toFixed(2) || '0.00'}</span></div>
+                </div>
+
+                <!-- Customer -->
+                <div class="detail-section">
+                    <h6>👤 Customer</h6>
+                    <div class="detail-row"><span class="label">Username</span>${val(order.userID?.username)}</div>
+                    <div class="detail-row"><span class="label">Email</span>${val(order.userID?.email)}</div>
+                </div>
+
+                <!-- Child Info -->
+                <div class="detail-section">
+                    <h6>🧒 Child Information</h6>
+                    <div class="detail-row"><span class="label">Child Name</span>${val(c.childName)}</div>
+                    <div class="detail-row"><span class="label">Child Age</span>${val(c.childAge)}</div>
+                    <div class="detail-row"><span class="label">Theme</span>${val(c.theme)}</div>
+                    <div class="detail-row"><span class="label">Story Style</span>${val(c.storyStyle)}</div>
+                    <div class="detail-row"><span class="label">Language</span>${val(c.storyLanguage)}</div>
+                </div>
+
+                <!-- Character Appearance -->
+                <div class="detail-section">
+                    <h6>🎨 Character Appearance</h6>
+                    <div class="detail-row"><span class="label">Image to Cartoon</span>${yn(c.imageToCartoon)}</div>
+                    <div class="detail-row"><span class="label">Hair Color</span>${val(c.hairColor)}</div>
+                    <div class="detail-row"><span class="label">Hair Type</span>${val(c.hairType)}</div>
+                    <div class="detail-row"><span class="label">Eye Color</span>${val(c.eyesColor)}</div>
+                    <div class="detail-row"><span class="label">Skin Tone</span>${val(c.skinTone)}</div>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="detail-section">
+                    <h6>✨ Add-ons</h6>
+                    <div class="detail-row"><span class="label">Voice Over</span>${val(c.voiceOver)}</div>
+                    <div class="detail-row"><span class="label">Background Music</span>${yn(c.backgroundMusic)}</div>
+                    <div class="detail-row"><span class="label">Sound Effect</span>${yn(c.soundEffect)}</div>
+                    <div class="detail-row"><span class="label">Proposed Story</span>${yn(c.proposedStory)}</div>
+                    ${c.proposedStory === 'yes' && c.proposedStoryText ? `<div class="detail-row"><span class="label">Story Text</span><span class="value" style="max-width:300px;white-space:pre-wrap;">${c.proposedStoryText}</span></div>` : ''}
+                    <div class="detail-row"><span class="label">End Cover</span>${yn(c.endCover)}</div>
+                    ${c.endCover === 'yes' ? `
+                        <div class="detail-row"><span class="label">Cover Name</span>${val(c.endCoverName)}</div>
+                        <div class="detail-row"><span class="label">Relationship</span>${val(c.relationship)}</div>
+                        <div class="detail-row"><span class="label">Cover Message</span>${val(c.endCoverMessage)}</div>
+                    ` : ''}
+                    <div class="detail-row"><span class="label">Custom Cover Image</span>${yn(c.coverImage)}</div>
+                </div>
+
+                <!-- Special Instructions -->
+                ${c.specialInstructions ? `
+                <div class="detail-section">
+                    <h6>📝 Special Instructions</h6>
+                    <p class="mb-0" style="white-space:pre-wrap;font-size:0.9rem;">${c.specialInstructions}</p>
+                </div>` : ''}
+
+                <!-- Price Breakdown -->
+                ${c.extraCharges ? `
+                <div class="detail-section">
+                    <h6>💰 Price Breakdown</h6>
+                    <div class="detail-row"><span class="label">Base Price</span><span class="value">$34.99</span></div>
+                    ${c.extraCharges.myVoice > 0 ? `<div class="detail-row"><span class="label">My Voice</span><span class="value">+$${c.extraCharges.myVoice}</span></div>` : ''}
+                    ${c.extraCharges.proposedStory > 0 ? `<div class="detail-row"><span class="label">Proposed Story</span><span class="value">+$${c.extraCharges.proposedStory}</span></div>` : ''}
+                    ${c.extraCharges.endCover > 0 ? `<div class="detail-row"><span class="label">End Cover</span><span class="value">+$${c.extraCharges.endCover}</span></div>` : ''}
+                    ${c.extraCharges.coverImage > 0 ? `<div class="detail-row"><span class="label">Cover Image</span><span class="value">+$${c.extraCharges.coverImage}</span></div>` : ''}
+                    ${c.extraCharges.backgroundMusic > 0 ? `<div class="detail-row"><span class="label">Background Music</span><span class="value">+$${c.extraCharges.backgroundMusic}</span></div>` : ''}
+                    ${c.extraCharges.soundEffect > 0 ? `<div class="detail-row"><span class="label">Sound Effect</span><span class="value">+$${c.extraCharges.soundEffect}</span></div>` : ''}
+                    <div class="detail-row mt-1 pt-1 border-top"><span class="label fw-bold">Total</span><span class="value fw-bold" style="color:#9b587c;">$${order.price?.toFixed(2)}</span></div>
+                </div>` : ''}
+            `;
+
+            new bootstrap.Modal(document.getElementById('viewOrderModal')).show();
         }
 
+        // ── Update order status ──────────────────────────────────────────────
         function updateOrder(orderId, currentStatus, currentPath) {
             document.getElementById('orderId').value = orderId;
             document.getElementById('orderStatus').value = currentStatus;
             document.getElementById('downloadPath').value = currentPath;
             
-            const modal = new bootstrap.Modal(document.getElementById('updateOrderModal'));
-            modal.show();
+            new bootstrap.Modal(document.getElementById('updateOrderModal')).show();
         }
 
         document.getElementById('updateOrderForm').addEventListener('submit', async (e) => {
@@ -291,42 +450,40 @@
                 
                 if (data.success) {
                     alert('✅ Order updated successfully!');
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('updateOrderModal'));
-                    modal.hide();
+                    bootstrap.Modal.getInstance(document.getElementById('updateOrderModal')).hide();
                     loadOrders();
                 }
             } catch (error) {
                 alert('❌ Failed to update order');
             }
         });
-        // Check if user is admin
-if (!auth.requireAdmin()) {
-    // Will redirect if not admin
-}
 
-// Display admin info
-const user = auth.getCurrentUser();
-if (user) {
-    document.querySelector('.admin-title').innerHTML = `
-        <i class="bi bi-speedometer2"></i> Admin Dashboard 
-        <small style="font-size: 0.6em; opacity: 0.9;">| ${user.username}</small>
-    `;
-}
+        // ── Auth guard ───────────────────────────────────────────────────────
+        if (!auth.requireAdmin()) {
+            // requireAdmin() redirects automatically
+        }
 
-// Logout button
-document.querySelector('a[href="homepage.html"]').parentElement.innerHTML = `
-    <a href="homepage.html" class="btn btn-light me-2">
-        <i class="bi bi-house"></i> Home
-    </a>
-    <button onclick="auth.logout()" class="btn btn-danger">
-        <i class="bi bi-box-arrow-right"></i> Logout
-    </button>
-`;
+        // Display admin username in header
+        const user = auth.getCurrentUser();
+        if (user) {
+            document.querySelector('.admin-title').innerHTML = `
+                <i class="bi bi-speedometer2"></i> Admin Dashboard 
+                <small style="font-size: 0.6em; opacity: 0.9;">| ${user.username}</small>
+            `;
+        }
 
-        // Load orders on page load
+        // Replace Back to Home button with Home + Logout
+        document.querySelector('a[href="homepage.html"]').parentElement.innerHTML = `
+            <a href="homepage.html" class="btn btn-light me-2">
+                <i class="bi bi-house"></i> Home
+            </a>
+            <button onclick="auth.logout()" class="btn btn-danger">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+        `;
+
+        // Load orders on page load & refresh every 30s
         loadOrders();
-        
-        // Refresh every 30 seconds
         setInterval(loadOrders, 30000);
     </script>
 </body>
